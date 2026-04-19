@@ -1,3 +1,4 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; MUST FIX USART FOR THIS MAIN ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   INCLUDE core_cm4_constants.s
 	INCLUDE stm32l476xx_constants.s
 
