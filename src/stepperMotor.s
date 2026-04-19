@@ -78,7 +78,7 @@ openLoop2
 exitOpen
 		MOV r0, #0x1000 ; set R8, b12 on (1)
 		ORR r8, r8, r0
-		;BL update_LED_states
+		BL update_LED_states
 		LDR r0, =complete
 		MOV r1, #8
 		BL USART2_Write
@@ -122,7 +122,7 @@ closeLoop2
 exitClose
 		MOV r0, #0x1000 ; reset R8, b12 off (0)
 		BIC r8, r8, r0
-		;BL update_LED_states
+		BL update_LED_states
 		LDR r0, =complete
 		MOV r1, #8
 		BL USART2_Write
@@ -136,7 +136,7 @@ move_platform
 		PUSH {lr, r6}
 		MOV r0, #0x800 ; r8, b11 status 0 (moving)
 		BIC r8, r8, r0
-		;BL update_LED_states
+		BL update_LED_states
 		LDR r0, =platformPrompt
 		MOV r1, #20
 		BL USART2_Write
@@ -223,6 +223,7 @@ upLoop2
 exitMovePlatform
 		MOV r0, #0x800 ; r8, b11 status 1 (stopped)
 		ORR r8, r8, r0
+		BL update_LED_states
 		LDR r0, =GPIOB_BASE
 		LDR r1, [r0, #GPIO_ODR]
 		BIC r1, r1, #0xF
