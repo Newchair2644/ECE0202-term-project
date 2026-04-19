@@ -3,10 +3,20 @@
 	IMPORT	System_Clock_Init
 	IMPORT	UART2_Init
 	IMPORT	USART2_Write
+	IMPORT keypad_scan
+	IMPORT move_platform
+	IMPORT increment_open_spots
+	IMPORT open_gate
+	IMPORT close_gate
+	IMPORT decrement_open_spots
 	; -- Add IMPORT for any external procedures here --
 
 	AREA    main, CODE, READONLY
-	EXPORT	__main
+	EXPORT exit_sequence
+	EXPORT manual_sequence
+	EXPORT automatic_sequence
+	EXPORT priority_sequence
+	
 	ENTRY
 
 __main	PROC
