@@ -320,7 +320,7 @@ charHT  DCD 35
 
 ;; messages for Tera Term
 msg_HT_start_prompt	DCB   "\nPress '#' to start.\r\n", 0
-msg_enter_exit_prompt DCB	"\nPress ‘0’ to exit a level or '1' to enter the garage.\r\n"
-msg_sequence_select DBC	"\nPress '*' for manual operation override, '#' for automatic operation, or '9' for priority parking.\r\n"
+msg_enter_exit_prompt DCB	"\nPress ‘0’ to exit a level or '1' to enter the garage.\r\n", 0
+msg_sequence_select DBC	"\nPress '*' for manual operation override, '#' for automatic operation, or '9' for priority parking.\r\n", 0
 
 	END
