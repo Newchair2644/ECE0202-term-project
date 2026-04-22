@@ -1,4 +1,3 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; MUST FIX USART FOR THIS MAIN ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   INCLUDE core_cm4_constants.s
 	INCLUDE stm32l476xx_constants.s
 
@@ -6,26 +5,21 @@
 	IMPORT	System_Clock_Init
 	IMPORT	UART2_Init
 	IMPORT	USART2_Write
-	IMPORT	update_LED_states
-	IMPORT	manual_sequence
-	IMPORT	automatic_sequence
-	IMPORT	priority_sequence
-	IMPORT	exit_sequence
 
 	AREA    main, CODE, READONLY
-	EXPORT	__main
+	EXPORT	keypad_test
 	EXPORT	keypad_scan
 	ENTRY
 
-__main	PROC
+keypad_test	PROC
 	BL System_Clock_Init
 	BL UART2_Init
 
 	; -- Peripheral clock enables go here (RCC_AHB2ENR, etc.) --
-	;; Enable the clock of GPIO Ports A-D
+	;; Enable the clock of GPIO Ports A & C
 	LDR r0, =RCC_BASE
 	LDR r1, [r0, #RCC_AHB2ENR]
-	ORR r1, r1, #0x0000000F
+	ORR r1, r1, #0x00000005
 	STR r1, [r0, #RCC_AHB2ENR]
 
 	; -- GPIO config (MODER, OTYPER, PUPDR) goes here --
@@ -57,11 +51,7 @@ __main	PROC
 	ORR r1, r1, #0x00000015
 	STR r1, [r0, #GPIO_PUPDR]
 
-	; -- Call each module's init procedure (initialize each module's GPIOs) --
-	;; BL Module_A_Init
-	;; BL Module_B_Init
-
-	; -- Main loop --
+	; -- Test loop --
 begin
 	; Write a “1” (on) to the “system idle” bit in R8
 	MOV r0, 0x00000100
@@ -117,6 +107,14 @@ rescan_sequence_select_enter
 	BEQ priority_sequence
 	BNE rescan_sequence_select_enter
 
+    B begin
+
+update_LED_states
+    BX LR
+exit_sequence
+priority_sequence
+manual_sequence
+automatic_sequence
 	B begin
 
 	ENDP
