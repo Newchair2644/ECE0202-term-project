@@ -31,10 +31,6 @@
 	EXPORT	move_platform
 				
 motorControl_init	PROC
-		BL System_Clock_Init    ; set up system clock first
-		BL UART2_Init           ; then init UART2 before any USART2_Write calls
-		BL hexDisplay_init
-		
 		LDR r0, =RCC_BASE			;B Clock
 		LDR r1, [r0, #RCC_AHB2ENR]
 		BIC r1, r1, #0x00000002
