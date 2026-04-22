@@ -1,0 +1,16 @@
+# Build outputs
+src/Objects/
+src/Listings/
+src/DebugConfig/
+src/RTE/
+
+# Compiled files
+*.axf
+*.hex
+*.htm
+*.map
+*.sct
+*.lnp
+*.dep
+*.o
+*.d
