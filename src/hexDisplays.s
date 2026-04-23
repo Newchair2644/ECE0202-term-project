@@ -26,6 +26,7 @@
 	EXPORT	hexDisplay_init				; make __main visible to linker
 	EXPORT  display_level
 	EXPORT  update_LED_states
+	EXPORT  initialize_open_spots
 	EXPORT  increment_open_spots
 	EXPORT  decrement_open_spots
 
@@ -198,6 +199,14 @@ update_open_spots PROC
 		BX      lr
 	ENDP
 
+initialize_open_spots PROC
+		PUSH    {r0, lr}
+		MOV     r0, #0
+		BL      update_open_spots
+		POP     {r0, lr}
+		BX      lr
+	ENDP
+		
 increment_open_spots PROC
 		PUSH    {r0, lr}
 		MOV     r0, #1

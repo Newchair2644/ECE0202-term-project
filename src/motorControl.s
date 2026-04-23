@@ -22,6 +22,7 @@
 	IMPORT	USART2_Write
 	IMPORT  hexDisplay_init
 	IMPORT  display_level
+	IMPORT  update_LED_states
 		
 	
 	AREA    main, CODE, READONLY
@@ -54,7 +55,7 @@ open_gate PROC
 		LDR r0, =openPrompt
 		MOV r1, #17
 		BL USART2_Write ; diplay opening prompt
-		LSL r0, #4
+		;LSL r0, #4
 		MOV r1, #7
 openLoop1 ; increment position
 		CMP r6, r7
@@ -80,7 +81,7 @@ openLoop2
 		ADD r2, r2, #1
 		B openLoop2
 exitOpen
-		MOV r0, #0x1000 ; set R8, b12 on (1)
+		MOV r0, #0x800 ; set R8, b12 on (1)
 		ORR r8, r8, r0
 		;BL update_LED_states
 		LDR r0, =complete
@@ -90,6 +91,7 @@ exitOpen
 		LDR r1, [r0, #GPIO_ODR]
 		BIC r1, r1, #0xF0
 		STR r1, [r0, #GPIO_ODR]
+		BL update_LED_states
 		POP {lr}
 		BX lr
 	ENDP
@@ -126,7 +128,7 @@ closeLoop2
 		SUB r2, r2, #1
 		B closeLoop2
 exitClose
-		MOV r0, #0x1000 ; reset R8, b12 off (0)
+		MOV r0, #0x800 ; reset R8, b12 off (0)
 		BIC r8, r8, r0
 		;BL update_LED_states
 		LDR r0, =complete
@@ -136,15 +138,16 @@ exitClose
 		LDR r1, [r0, #GPIO_ODR]
 		BIC r1, r1, #0xF0
 		STR r1, [r0, #GPIO_ODR]
+		BL update_LED_states
 		POP {lr}
 		BX lr
 	ENDP
 		
 move_platform PROC
 		PUSH {lr, r6, r11}
-		MOV r0, #0x800 ; r8, b11 status 0 (moving)
+		MOV r0, #0x1000 ; r8, b11 status 0 (moving)
 		BIC r8, r8, r0
-		;BL update_LED_states
+		BL update_LED_states
 		LDR r0, =platformPrompt
 		MOV r1, #20
 		BL USART2_Write
@@ -249,7 +252,7 @@ upLoop2
 		ADD r2, r2, #1
 		B upLoop2
 exitMovePlatform
-		MOV r0, #0x800 ; r8, b11 status 1 (stopped)
+		MOV r0, #0x1000 ; r8, b11 status 1 (stopped)
 		ORR r8, r8, r0
 		LDR r0, =GPIOB_BASE
 		LDR r1, [r0, #GPIO_ODR]
@@ -258,6 +261,7 @@ exitMovePlatform
 		LDR r0, =complete
 		MOV r1, #8
 		BL USART2_Write
+		BL update_LED_states
 		POP {lr, r6, r11}
 		BX lr
 	ENDP

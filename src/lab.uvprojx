@@ -424,6 +424,11 @@
               <FileType>2</FileType>
               <FilePath>.\motorControl.s</FilePath>
             </File>
+            <File>
+              <FileName>keypadScan.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\keypadScan.s</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
