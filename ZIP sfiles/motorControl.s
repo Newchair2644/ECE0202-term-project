@@ -50,14 +50,12 @@ motorControl_init	PROC
 		
 				
 open_gate PROC
-		PUSH {lr, r6, r7}       ; save r6 and r7 — we're borrowing them locally
-		MOV r6, #0              ; start servo position at 0 (closed)
-		MOV r7, #207
+		PUSH {lr}
 		MOV r7, #207 ; ~145 degrees
 		LDR r0, =openPrompt
 		MOV r1, #17
 		BL USART2_Write ; diplay opening prompt
-		LSL r0, #4
+		;LSL r0, #4
 		MOV r1, #7
 openLoop1 ; increment position
 		CMP r6, r7
@@ -94,13 +92,12 @@ exitOpen
 		BIC r1, r1, #0xF0
 		STR r1, [r0, #GPIO_ODR]
 		BL update_LED_states
-		POP {lr, r6, r7}
+		POP {lr}
 		BX lr
 	ENDP
 		
 close_gate PROC
-		PUSH {lr, r6, r7}       ; save r6 and r7 — we're borrowing them locally
-		MOV r6, #207              ; start servo position at 207 (opened)
+		PUSH {lr}
 		MOV r7, #0 ; ~0 degrees
 		LDR r0, =closePrompt
 		;ADD r0, r0, #4
@@ -142,7 +139,7 @@ exitClose
 		BIC r1, r1, #0xF0
 		STR r1, [r0, #GPIO_ODR]
 		BL update_LED_states
-		POP {lr, r6, r7}
+		POP {lr}
 		BX lr
 	ENDP
 		
@@ -161,15 +158,15 @@ move_platform PROC
 moveDown
 		SUB r0, r4, r5
 		CMP r0, #512
-		MOVLE r6, #20; store delay step size
+		MOVLE r6, #50; store delay step size
 		BLE downInit
 		CMP r0, #1024
-		MOVLE r6, #10
+		MOVLE r6, #25
 		BLE downInit
 		CMP r0, #1536
-		MOVLE r6, #5
+		MOVLE r6, #13
 		BLE downInit
-		MOVGT r6, #3
+		MOVGT r6, #5
 downInit
 		MOV r1, #2
 		UDIV r2, r0, r1
@@ -208,15 +205,15 @@ downLoop2
 moveUp
 		SUB r0, r5, r4
 		CMP r0, #512
-		MOVLE r6, #20; store delay step size
+		MOVLE r6, #50; store delay step size
 		BLE upInit
 		CMP r0, #1024
 		MOVLE r6, #10
 		BLE upInit
 		CMP r0, #1536
-		MOVLE r6, #5
+		MOVLE r6, #13
 		BLE upInit
-		MOVGT r6, #3
+		MOVGT r6, #5
 upInit
 		MOV r1, #2
 		UDIV r2, r0, r1

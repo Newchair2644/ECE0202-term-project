@@ -163,7 +163,7 @@ update_open_spots PROC
 		; open = 8 - occupied, then apply either add or sub
 		MOV     r1, #8
 		SUB     r1, r1, r2                  ; r1 = open spots
-		;ADD     r1, r1, r0                  ; add 1 or -1
+		ADD     r1, r1, r0                  ; add 1 or -1
 
 		; Update R9 bits 3-0
 		BIC     r9, r9, #0x0000000F

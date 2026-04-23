@@ -19,14 +19,13 @@
 	IMPORT  keypadScan_init
 	IMPORT	keypad_scan
 	IMPORT  initialize_open_spots
-	IMPORT	manual_sequence
-	IMPORT	automatic_sequence
-	IMPORT	priority_sequence
-	IMPORT	exit_sequence
+	;IMPORT	manual_sequence
+	;IMPORT	automatic_sequence
+	;IMPORT	priority_sequence
+	;IMPORT	exit_sequence
 
 	AREA    main, CODE, READONLY
 	EXPORT	__main
-	EXPORT	begin
 	ENTRY
 
 __main	PROC
@@ -37,28 +36,28 @@ __main	PROC
 	BL motorControl_init
 	BL keypadScan_init
 	
+	
+begin
+	; Write a “1” (on) to the “system idle” bit in R8
+	MOV r0, #0x00001100
+	ORR r8, r8, r0
+	BL update_LED_states
 	MOV r6, #0
 	MOV r7, #0
 	MOV r4, #0
 	MOV r5, #0
 	BL initialize_open_spots
-	
-	B begin
-	
-	ENDP
-	
-begin PROC
-	; Write a “1” (on) to the “system idle” bit in R8
-	MOV r0, #0x00001100
-	ORR r8, r8, r0
-	BL update_LED_states
+	BL open_gate
+	BL close_gate
+	MOV r5, #2048
+	BL move_platform
 	
 rescan_start
 	; Display “Press ‘#’ to Start” message on Tera Term
 	LDR r0, =msg_HT_start_prompt   ; First argument
 	MOV r1, #21    ; Second argument
 	BL USART2_Write
-	LSL r0, #4
+	;LSL r0, #4
 
 	; Scan for '#' input and rescan if not pressed
 	AND r11, r11, #0x0
@@ -103,16 +102,15 @@ rescan_sequence_select_enter
 	BEQ priority_sequence
 	BNE rescan_sequence_select_enter
 
-
-
-
+priority_sequence
+automatic_sequence
+manual_sequence
+exit_sequence
 
 	B begin
 
 
 	ENDP
-	
-	
 	
 	AREA myData, DATA, READWRITE
 	ALIGN

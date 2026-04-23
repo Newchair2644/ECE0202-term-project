@@ -185,7 +185,7 @@ write
 	LDR r2, [r0]
 	STRB r2, [SP]
 	MOV r0, SP	; Grab address we put into the stack
-	LDRB r11, [r0]	; r11 stores the latest key press
+	LDR r11, [r0]	; r11 stores the latest key press
 	
 	MOV r1, #1
 	BL USART2_Write

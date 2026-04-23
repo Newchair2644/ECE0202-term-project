@@ -429,6 +429,11 @@
               <FileType>2</FileType>
               <FilePath>.\keypadScan.s</FilePath>
             </File>
+            <File>
+              <FileName>subroutines.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\subroutines.s</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
